@@ -1,41 +1,46 @@
 import chromadb
 import os
+import argparse
 import ollama
-from dotenv import load_dotenv
-from openai import OpenAI
+from langchain_ollama import OllamaEmbeddings
+from langchain_chroma import Chroma
 
-
-from langchain_community.vectorstores import Chroma
-from chromadb.utils.embedding_functions import SentenceTransformerEmbeddingFunction
-
-# Load variables from .env into the environment
-load_dotenv()
 
 DATA_PATH = r"data"
 CHROMA_PATH = r"chroma_db"
 
 
 def main():
-    # Prepare the DB.
-    embedding_function = SentenceTransformerEmbeddingFunction(model_name="all-MiniLM-L6-v2")
-    db = Chroma(
+
+    # Create CLI for user query
+    parser = argparse.ArgumentParser()
+    parser.add_argument("query_text", type=str, help="The query text.")
+    args = parser.parse_args()
+    query_text = args.query_text
+    query_rag(query_text)
+
+
+    # if len(results) == 0 or results[0][1] < 0.7:
+    #     print(f"Unable to find matching results.")
+    #     return
+
+
+def query_rag(query_text: str):
+
+    # Preparing database with vector embeddings
+    embedding_function = get_embedding_function()
+    vector_store = Chroma(
         collection_name="bee_movie",
         persist_directory=CHROMA_PATH, 
         embedding_function=embedding_function
     )
 
-    # Searching the DB
-    user_query =  input("What do you want to know about the Bee Movie?\n\n")
-    results = db.similarity_search_with_relevance_scores(user_query, k=3)
-    if len(results) == 0 or results[0][1] < 0.7:
-        print(f"Unable to find matching results.")
-        return
-
-    # Extracted from results
+    # Searching database for relevant chunks
+    results = vector_store.similarity_search_with_relevance_scores(query_text, k=5)
 
     context_text = "\n\n---\n\n".join([doc.page_content for doc, _score in results])
 
-    print(f"CONTEXT TEXT IS ---------- \n\n{context_text}")
+    # print(f"CONTEXT TEXT IS ---------- \n\n{context_text}") testing a print output of the retrieved relevant chunks
 
     prompt = f"""
     You are a helpful assistant when in comes to answering questions about The Bee Movie. 
@@ -50,16 +55,29 @@ def main():
     {context_text}
     """ 
 
+    TEMPLATE = f"""
+    Answer the question in a verbose manner based only on the following context:
+    {context_text}
+
+    ---
+    Answer the question in a verbose manner based on the above context: {query_text}
+    """
+
     client = ollama.Client()
 
     model = "gemma3"
 
-    response = client.generate(model=model, prompt=prompt)
+    response = client.generate(model=model, prompt=TEMPLATE)
 
     # LLM response
 
     print("Response from Ollama: ")
     print(response.response)
+
+
+def get_embedding_function():
+    embeddings =  OllamaEmbeddings(model="nomic-embed-text")
+    return embeddings
 
 
 if __name__ == "__main__":
