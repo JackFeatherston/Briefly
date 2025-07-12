@@ -73,7 +73,7 @@ def query_rag(query_text: str):
 
     print("Response from Ollama: ")
     print(response.response)
-    print(f"Here is context used to derive this answer ---------- \n\n{context_text}")
+    print(f"\n\n---\nHere is context used to derive this answer ---------- \n\n{context_text}")
     
 
 
