@@ -73,6 +73,8 @@ def query_rag(query_text: str):
 
     print("Response from Ollama: ")
     print(response.response)
+    print(f"Here is context used to derive this answer ---------- \n\n{context_text}")
+    
 
 
 def get_embedding_function():
