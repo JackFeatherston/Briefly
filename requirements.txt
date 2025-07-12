@@ -3,7 +3,10 @@ openai
 dotenv
 langchain_community
 langchain_text_splitters
+langchain-ollama
+langchain-chroma
 pypdf
+ollama
 
 
 sentence_transformers

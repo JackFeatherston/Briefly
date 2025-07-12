@@ -1,7 +1,10 @@
 import chromadb
 import os
+import ollama
 from dotenv import load_dotenv
 from openai import OpenAI
+
+
 from langchain_community.vectorstores import Chroma
 from chromadb.utils.embedding_functions import SentenceTransformerEmbeddingFunction
 
@@ -34,13 +37,7 @@ def main():
 
     print(f"CONTEXT TEXT IS ---------- \n\n{context_text}")
 
-    # Access the API key from environment variables
-    client = OpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=os.getenv("OPENROUTER_API_KEY")
-    )
-
-    message = f"""
+    prompt = f"""
     You are a helpful assistant when in comes to answering questions about The Bee Movie. 
     You have been provided the entire script of the Bee Movie. 
     You answer questions about anything related to The Bee Movie, but you only answer based on knowledge I'm providing you. 
@@ -53,79 +50,17 @@ def main():
     {context_text}
     """ 
 
-    # Send request
-    response = client.chat.completions.create(
-        model="meta-llama/llama-3.3-70b-instruct",
-        messages = [
-        {"role": "system", "content": message},
-        {"role": "user", "content": user_query}
-        ],
-        # temperature=0.7,
-        max_tokens=150
-    )
+    client = ollama.Client()
 
-    # Print result
-    print("Assistant says:", response.choices[0].message.content)
+    model = "gemma3"
 
+    response = client.generate(model=model, prompt=prompt)
+
+    # LLM response
+
+    print("Response from Ollama: ")
+    print(response.response)
 
 
 if __name__ == "__main__":
     main()
-
-# # Embedding function
-
-# embedding_fn = SentenceTransformerEmbeddingFunction(model_name="all-MiniLM-L6-v2")
-
-# chroma_client = chromadb.PersistentClient(path=CHROMA_PATH)
-
-# collection = chroma_client.get_or_create_collection(
-#     name="bee_movie",
-#     embedding_function=embedding_fn
-# )
-
-
-# user_query =  input("What do you want to know about the Bee Movie?\n\n")
-
-# results = collection.query(
-#     query_texts=[user_query],
-#     n_results=3
-# )
-
-# # Extracted from results
-
-# retrieved_docs = "\n\n".join(doc for doc in results["documents"][0])
-
-# # print(results["documents"])
-
-# # Access the API key from environment variables
-# client = OpenAI(
-#     base_url="https://openrouter.ai/api/v1",
-#     api_key=os.getenv("OPENROUTER_API_KEY")
-# )
-
-# message = f"""
-# You are a helpful assistant when in comes to answering questions about The Bee Movie. 
-# You have been provided the entire script of the Bee Movie. 
-# You answer questions about anything related to The Bee Movie, but you only answer based on knowledge I'm providing you. 
-# You don't use your internal knowledge and you don't make things up.
-# If you don't know the answer, just say: I don't know.
-
-# ---------------------------------
-
-# The data: 
-# {retrieved_docs}
-# """ 
-
-# # Send request
-# response = client.chat.completions.create(
-#     model="meta-llama/llama-3.3-70b-instruct",
-#     messages = [
-#     {"role": "system", "content": message},
-#     {"role": "user", "content": user_query}
-#     ],
-#     # temperature=0.7,
-#     max_tokens=150
-# )
-
-# # Print result
-# print("Assistant says:", response.choices[0].message.content)
