@@ -5,7 +5,7 @@ EVAL_PROMPT = """
 Expected Response: {expected_response}
 Actual Response: {actual_response}
 ---
-(Answer with 'true' or 'false') Does the actual response match the expected response? 
+(Answer with 'true' or 'false') Is the actual response close enough to the expected response? 
 """
 
 
