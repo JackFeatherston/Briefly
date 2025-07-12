@@ -7,6 +7,4 @@ langchain-ollama
 langchain-chroma
 pypdf
 ollama
-
-
-sentence_transformers
+pytest

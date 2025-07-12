@@ -13,10 +13,13 @@ CHROMA_PATH = r"chroma_db"
 def main():
 
     # Create CLI for user query
-    parser = argparse.ArgumentParser()
-    parser.add_argument("query_text", type=str, help="The query text.")
-    args = parser.parse_args()
-    query_text = args.query_text
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument("query_text", type=str, help="The query text.")
+    # args = parser.parse_args()
+    # query_text = args.query_text
+
+    # Get the user's query
+    query_text = input("Ask a question! ")
     query_rag(query_text)
 
 
@@ -56,15 +59,16 @@ def query_rag(query_text: str):
     """ 
 
     TEMPLATE = f"""
-    Answer the question in a verbose manner based only on the following context:
+    Answer the question based only on the following context:
     {context_text}
 
     ---
-    Answer the question in a verbose manner based on the above context: {query_text}
+    Answer the question based on the above context: {query_text}
     """
 
     client = ollama.Client()
 
+    # change as needed 
     model = "gemma3"
 
     response = client.generate(model=model, prompt=TEMPLATE)
@@ -74,6 +78,7 @@ def query_rag(query_text: str):
     print("Response from Ollama: ")
     print(response.response)
     print(f"\n\n---\nHere is context used to derive this answer ---------- \n\n{context_text}")
+    return response.response
     
 
 
