@@ -61,13 +61,24 @@ def query_rag(query_text: str):
     If you don't know the answer, just say: I don't know.
     Here is the following format to which you must stricly adhere to: 
     
-    Defendant: []
-    Plaintiff: []
-    Big Overall Summary: []
+    ----
+    Plaintiff: [Plaintiff Name Here]
+    DOB: [Plaintiff Date of Birth Here]
+    SSN: [Plaintiff Social Security Number Here]
+    DOI: [Date of Incident Here]
+
+    Insurance: [Plaintiff Insurance Here]
+
+    Incident Overview: [Brief Three to Four sentence summary describing the incident including the Plaintiff's name, 
+    and location, date, and time of incident]
+
+    Treatment Overview: [Include a detailed paragraph for each significant date that the Plaintiff underwent treatment. Include important facts and dates]
+
+
     Little summaries of documents: []
 
 
-    ---
+    ----
     Here are your documents to summarize:
     {context_text}
     """
