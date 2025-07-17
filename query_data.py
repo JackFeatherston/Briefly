@@ -41,22 +41,14 @@ def query_rag(query_text: str):
     # Searching database for relevant chunks
     results = vector_store.similarity_search_with_relevance_scores(query_text, k=5)
 
-    context_text = "\n\n---\n\n".join([doc.page_content for doc, _score in results])
+    context_chunks = []
+    for doc, _score in results:
+        chunk_id = doc.metadata.get("id", "unknown-id")
+        chunk_content = doc.page_content
+        context_chunks.append(f"[ID: {chunk_id}]\n{chunk_content}")
 
-    # print(f"CONTEXT TEXT IS ---------- \n\n{context_text}") testing a print output of the retrieved relevant chunks
+    context_text = "\n\n---\n\n".join(context_chunks)
 
-    prompt = f"""
-    You are a helpful assistant when in comes to answering questions about The Bee Movie. 
-    You have been provided the entire script of the Bee Movie. 
-    You answer questions about anything related to The Bee Movie, but you only answer based on knowledge I'm providing you. 
-    You don't use your internal knowledge and you don't make things up.
-    If you don't know the answer, just say: I don't know.
-
-    ---------------------------------
-
-    The data: 
-    {context_text}
-    """ 
 
     BRIEFLY_PROMPT_TEMPLATE = f"""
     You are a senior paralegal with twenty years of experience working for respectable, corporate law firms.
@@ -68,11 +60,12 @@ def query_rag(query_text: str):
     You don't use your internal knowledge and you don't make things up.
     If you don't know the answer, just say: I don't know.
     Here is the following format to which you must stricly adhere to: 
-    [GET MEMO]
+    
     Defendant: []
     Plaintiff: []
     Big Overall Summary: []
     Little summaries of documents: []
+
 
     ---
     Here are your documents to summarize:
@@ -97,8 +90,8 @@ def query_rag(query_text: str):
     # LLM response
 
     print("Response from Ollama: ")
-    print(response.response)
     print(f"\n\n---\nHere is context used to derive this answer ---------- \n\n{context_text}")
+    print(response.response)
     return response.response
     
 
