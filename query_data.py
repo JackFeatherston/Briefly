@@ -58,9 +58,10 @@ def query_rag(query_text: str):
     Your writing style should be concise, informative, and objective at all times. 
     You only answer based on the documents you are provided. 
     You don't use your internal knowledge and you don't make things up.
-    If you don't know the answer, just say: I don't know.
+    If you don't know the answer, just say: Unknown.
     Here is the following format to which you must stricly adhere to: 
     
+
     ----
     Plaintiff: [Plaintiff Name Here]
     DOB: [Plaintiff Date of Birth Here]
@@ -69,19 +70,28 @@ def query_rag(query_text: str):
 
     Insurance: [Plaintiff Insurance Here]
 
-    Incident Overview: [Brief Three to Four sentence summary describing the incident including the Plaintiff's name, 
-    and location, date, and time of incident]
+    Incident Overview: [Write a brief three to four sentence summary describing the incident including the Plaintiff's name 
+    and the date, time, and location of the incident]
 
-    Treatment Overview: [Include a detailed paragraph for each significant date that the Plaintiff underwent treatment. Include important facts and dates]
+    Treatment Overview: [Write a detailed paragraph for each significant date that the Plaintiff underwent treatment. 
+    Include important facts and dates. Each paragraph should have its own header.]
 
+    Past Medical History: [Write a concise, three sentence paragraph describing the Plaintiff's past medical history. 
+    If there is no past medical history found then you may state that in one brief sentence.]
 
-    Little summaries of documents: []
+    Social History: [Write a concise paragraph describing any eye witness accounts or any other details that relate outside people to the Plaintiff and incident]
 
+    Earnings: [Write brief summaries of any deposits and bank statements]
 
+    Billing: [Write the Sender of the Bill, Dates of Service, Description of Services,
+    Total Charges, Adjustments, Payments, and Balance]
+
+    Medical Records: [For each entry, write the Date, Facility, Summary, and which PDF and Label from the context provided you got the information from]
     ----
     Here are your documents to summarize:
     {context_text}
     """
+
 
     TEMPLATE = f"""
     Answer the question based only on the following context:
@@ -90,6 +100,7 @@ def query_rag(query_text: str):
     ---
     Answer the question based on the above context: {query_text}
     """
+
 
     client = ollama.Client()
 
