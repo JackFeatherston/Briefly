@@ -55,7 +55,9 @@ def query_rag():
     client = ollama.Client()
 
     # change as needed 
-    model = "gemma3"
+    # model = "gemma3"
+    # model = "llama2:13b"
+    model = "llama2:7b"
 
     for key, query_text in queries.items():
 
