@@ -33,10 +33,10 @@ def query_rag():
 
     queries = {
         "Plaintiff" : "What is the Plaintiffs first and last name",
-        "DOB" : "Plaintiff Date of Birth",
-        "SSN" : "Plaintiff Social Security Number Here",
-        "DOI" : "Date of Incident Here",
-        "Insurance" : "Plaintiff Insurance Here",
+        "DOB" : "What is the Plaintiff's Date of Birth",
+        "SSN" : "What is the Plaintiff's Social Security Number",
+        "DOI" : "What is the Date of Incident",
+        "Insurance" : "What is the Plaintiff's Insurance Company",
         "Incident Overview" : """Write a brief three to four sentence summary describing the incident including the Plaintiffs name 
                                 and the date, time, and location of the incident""",
         "Treatment Overview" : """Write a detailed paragraph for each significant date that the Plaintiff underwent treatment. 
