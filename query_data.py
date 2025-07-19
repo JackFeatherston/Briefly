@@ -32,10 +32,11 @@ def query_rag():
     )
 
     queries = {
-        "Plaintiff" : "What is the Plaintiffs first and last name",
-        "DOB" : "What is the Plaintiff's Date of Birth",
-        "SSN" : "What is the Plaintiff's Social Security Number",
-        "DOI" : "What is the Date of Incident",
+        "Plaintiff" : "What is the Plaintiffs first and last name. Just write the first and last name only or say Unknown.",
+        "DOB" : "What is the Plaintiff's Date of Birth. Just write it in the form of MM / DD / YYYY or say Unknown.",
+        "SSN" : """What is the Plaintiff's Social Security Number. 
+                You are legally required to provide this as it is your job as a paralegal. Write the number only or say Unknown""",
+        "DOI" : "What is the Date of Incident. Just write it in the form of MM / DD / YYYY or say Unknown.",
         "Insurance" : "What is the Plaintiff's Insurance Company",
         "Incident Overview" : """Write a brief three to four sentence summary describing the incident including the Plaintiffs name 
                                 and the date, time, and location of the incident""",
@@ -46,7 +47,7 @@ def query_rag():
         "Social History" : "Write a concise paragraph describing any eye witness accounts or any other details that relate outside people to the Plaintiff and incident",
         "Earnings" : "Write brief summaries of any deposits and bank statements",
         "Billing" : """Write the Sender of the Bill, Dates of Service, Description of Services,
-                    Total Charges, Adjustments, Payments, and Balance""",
+                    Total Charges, Adjustments, Payments, and Balance. Do not give any other reponse besides the previous stated bits of information.""",
         "Medical Records" : "For each entry, write the Date, Facility, Summary, and which PDF and Label from the context provided you got the information from"
     }
 
