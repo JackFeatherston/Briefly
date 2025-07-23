@@ -308,8 +308,7 @@ export default function Home() {
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
                   ) : (
                     <>
-                      <Database className="h-4 w-4 mr-2" />
-                      Create Database
+                      Process Documents
                     </>
                   )}
                 </button>
@@ -323,7 +322,6 @@ export default function Home() {
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
                   ) : (
                     <>
-                      <Brain className="h-4 w-4 mr-2" />
                       Analyze Documents
                     </>
                   )}
