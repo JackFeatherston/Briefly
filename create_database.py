@@ -18,14 +18,14 @@ CHROMA_PATH = r"chroma_db"
 def main():
 
     # Check if database should be cleared
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--reset", action="store_true", help="Reset the database.")
-    args = parser.parse_args()
-    if args.reset:
-        print("---> Clearing Database")
-        clear_database()
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument("--reset", action="store_true", help="Reset the database.")
+    # args = parser.parse_args()
+    # if args.reset:
+    #     print("---> Clearing Database")
+    #     clear_database()
 
-    # Create (or update) the data store.
+    # Create (or update) the data store. 
     clear_database()
     documents = load_documents()
     chunks = split_documents(documents)
