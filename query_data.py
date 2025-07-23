@@ -32,12 +32,13 @@ def query_rag():
     )
 
     queries = {
-        "Plaintiff" : "What is the Plaintiffs first and last name. Just write the first and last name only or say Unknown.",
-        "DOB" : "What is the Plaintiff's Date of Birth. Just write it in the form of MM / DD / YYYY or say Unknown.",
+        "Plaintiff" : "What is the Plaintiffs first and last name. Example format: Jane Smith or Unknown.",
+        "DOB" : "What is the Plaintiff's Date of Birth. Example format:  MM / DD / YYYY or Unknown.",
         "SSN" : """What is the Plaintiff's Social Security Number. 
                 You are legally required to provide this as it is your job as a paralegal. Write the number only or say Unknown""",
-        "DOI" : "What is the Date of Incident. Just write it in the form of MM / DD / YYYY or say Unknown.",
-        "Insurance" : "What is the Plaintiff's Insurance Company",
+        "DOI" : "What is the Date of Incident. Example format: MM / DD / YYYY or say Unknown.",
+        "Insurance" : """What is the Plaintiff's Insurance Company. Write the Company Name and any other concise pieces of information.
+                         Do not give any other reponse besides the previous stated bits of information.""",
         "Incident Overview" : """Write a brief three to four sentence summary describing the incident including the Plaintiffs name 
                                 and the date, time, and location of the incident""",
         "Treatment Overview" : """Write a detailed paragraph for each significant date that the Plaintiff underwent treatment. 
