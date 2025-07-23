@@ -8,3 +8,6 @@ langchain-chroma
 pypdf
 ollama
 pytest
+fastapi
+uvicorn
+python-multipart
