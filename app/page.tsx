@@ -5,12 +5,11 @@ import {
   Upload,
   FileText,
   Trash2,
-  Database,
   Pencil,
   Check,
   X,
   AlertCircle,
-  Sparkle
+  Sparkle,
 } from "lucide-react";
 
 interface AnalysisResults {
@@ -210,7 +209,6 @@ export default function Home() {
         {/* Alert Messages */}
         {error && (
           <div className="mb-8 p-4 bg-red-900/30 border border-red-500/50 rounded-xl backdrop-blur-sm flex items-center">
-            <X className="h-5 w-5 text-red-400 mr-3" />
             <span className="text-red-300 font-medium">{error}</span>
             <button
               onClick={clearMessages}
