@@ -4,13 +4,13 @@ import { useState, useRef } from "react";
 import {
   Upload,
   FileText,
-  Play,
   Trash2,
   Database,
-  Brain,
+  Pencil,
   Check,
   X,
   AlertCircle,
+  Sparkle
 } from "lucide-react";
 
 interface AnalysisResults {
@@ -175,25 +175,46 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black text-gray-100 font-mono">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-1/2 -right-1/2 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-1/2 -left-1/2 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      </div>
+
+      <div className="relative container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Briefly</h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            AI-powered legal document analysis tool for paralegals. Upload PDF
-            documents and extract key information automatically.
+        <div className="text-center mb-16">
+          <div className="flex items-center justify-center mb-6">
+            <div className="relative">
+              <h1 className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 tracking-wider">
+                BRIEFLY
+              </h1>
+            </div>
+          </div>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed font-light tracking-wide">
+            Next-generation AI-powered legal document analysis platform.
+            <br />
+            <span className="text-cyan-400 font-semibold">
+              Upload. Process. Analyze.
+            </span>
           </p>
+          <div className="flex items-center justify-center mt-6 space-x-6">
+            <div className="flex items-center text-sm text-gray-400">
+              Secure Processing &mdash;&mdash; AI-Powered &mdash;&mdash; Smart
+              Analysis
+            </div>
+          </div>
         </div>
 
         {/* Alert Messages */}
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center">
-            <X className="h-5 w-5 text-red-500 mr-3" />
-            <span className="text-red-700">{error}</span>
+          <div className="mb-8 p-4 bg-red-900/30 border border-red-500/50 rounded-xl backdrop-blur-sm flex items-center">
+            <X className="h-5 w-5 text-red-400 mr-3" />
+            <span className="text-red-300 font-medium">{error}</span>
             <button
               onClick={clearMessages}
-              className="ml-auto text-red-500 hover:text-red-700"
+              className="ml-auto text-red-400 hover:text-red-300 transition-colors"
             >
               <X className="h-4 w-4" />
             </button>
@@ -201,12 +222,12 @@ export default function Home() {
         )}
 
         {success && (
-          <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center">
-            <Check className="h-5 w-5 text-green-500 mr-3" />
-            <span className="text-green-700">{success}</span>
+          <div className="mb-8 p-4 bg-green-900/30 border border-green-500/50 rounded-xl backdrop-blur-sm flex items-center">
+            <Check className="h-5 w-5 text-green-400 mr-3" />
+            <span className="text-green-300 font-medium">{success}</span>
             <button
               onClick={clearMessages}
-              className="ml-auto text-green-500 hover:text-green-700"
+              className="ml-auto text-green-400 hover:text-green-300 transition-colors"
             >
               <X className="h-4 w-4" />
             </button>
@@ -216,37 +237,45 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Upload Section */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                <Upload className="h-5 w-5 mr-2" />
-                Upload Documents
+            <div className="bg-gray-800/50 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-gray-700/50 hover:border-gray-600/50 transition-all duration-300">
+              <h2 className="text-2xl font-bold text-white mb-6 flex items-center tracking-wide">
+                <Upload className="h-6 w-6 mr-3 text-blue-400" />
+                UPLOAD DOCS
               </h2>
 
-              <div className="space-y-4">
-                <div>
+              <div className="space-y-6">
+                <div className="relative">
                   <input
                     ref={fileInputRef}
                     type="file"
                     multiple
                     accept=".pdf"
                     onChange={handleFileSelect}
-                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                    className="block w-full text-sm text-gray-300 
+                             file:mr-4 file:py-3 file:px-6 
+                             file:rounded-full file:border-0 
+                             file:text-sm file:font-bold
+                             file:bg-gradient-to-r file:from-blue-600 file:to-purple-600
+                             file:text-white file:shadow-lg
+                             hover:file:from-blue-500 hover:file:to-purple-500
+                             file:transition-all file:duration-300
+                             file:cursor-pointer cursor-pointer"
                   />
                 </div>
 
                 {files.length > 0 && (
-                  <div>
-                    <p className="text-sm text-gray-600 mb-2">
-                      Selected files:
+                  <div className="bg-gray-900/50 rounded-xl p-4 border border-gray-700/30">
+                    <p className="text-sm text-gray-400 mb-3 font-semibold uppercase tracking-wider">
+                      Selected Files:
                     </p>
-                    <ul className="space-y-1">
+                    <ul className="space-y-2">
                       {files.map((file, index) => (
                         <li
                           key={index}
-                          className="text-sm text-gray-700 flex items-center"
+                          className="text-sm text-gray-300 flex items-center bg-gray-800/30 rounded-lg p-2"
                         >
-                          <FileText className="h-4 w-4 mr-2" />
-                          {file.name}
+                          <FileText className="h-4 w-4 mr-3 text-cyan-400" />
+                          <span className="truncate">{file.name}</span>
                         </li>
                       ))}
                     </ul>
@@ -256,13 +285,17 @@ export default function Home() {
                 <button
                   onClick={uploadFiles}
                   disabled={files.length === 0 || isUploading}
-                  className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white py-2 px-4 rounded-md transition-colors flex items-center justify-center"
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 
+                           disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed
+                           text-white py-4 px-6 rounded-xl transition-all duration-300 
+                           flex items-center justify-center font-bold text-sm tracking-wide uppercase
+                           shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                 >
                   {isUploading ? (
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
                   ) : (
                     <>
-                      <Upload className="h-4 w-4 mr-2" />
+                      <Upload className="h-5 w-5 mr-2" />
                       Upload Files
                     </>
                   )}
@@ -271,43 +304,48 @@ export default function Home() {
 
               {/* Uploaded Files List */}
               {uploadedFiles.length > 0 && (
-                <div className="mt-6">
-                  <h3 className="text-lg font-medium text-gray-900 mb-3">
+                <div className="mt-8">
+                  <h3 className="text-lg font-bold text-white mb-4 uppercase tracking-wider">
                     Uploaded Files
                   </h3>
-                  <ul className="space-y-2">
+                  <div className="space-y-2 max-h-64 overflow-y-auto custom-scrollbar">
                     {uploadedFiles.map((filename, index) => (
-                      <li
+                      <div
                         key={index}
-                        className="flex items-center justify-between p-2 bg-gray-50 rounded"
+                        className="flex items-center justify-between p-3 bg-gray-900/40 rounded-lg border border-gray-700/30 hover:border-gray-600/50 transition-all duration-200"
                       >
-                        <span className="text-sm text-gray-700 flex items-center">
-                          <FileText className="h-4 w-4 mr-2" />
-                          {filename}
+                        <span className="text-sm text-gray-300 flex items-center">
+                          <FileText className="h-4 w-4 mr-3 text-cyan-400" />
+                          <span className="truncate">{filename}</span>
                         </span>
                         <button
                           onClick={() => deleteFile(filename)}
-                          className="text-red-500 hover:text-red-700"
+                          className="text-red-400 hover:text-red-300 transition-colors p-1 hover:bg-red-900/20 rounded"
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>
-                      </li>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
                 </div>
               )}
 
               {/* Action Buttons */}
-              <div className="mt-6 space-y-3">
+              <div className="mt-8 space-y-4">
                 <button
                   onClick={createDatabase}
                   disabled={uploadedFiles.length === 0 || isCreatingDatabase}
-                  className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 text-white py-2 px-4 rounded-md transition-colors flex items-center justify-center"
+                  className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500
+                           disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed
+                           text-white py-4 px-6 rounded-xl transition-all duration-300 
+                           flex items-center justify-center font-bold text-sm tracking-wide uppercase
+                           shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                 >
                   {isCreatingDatabase ? (
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
                   ) : (
                     <>
+                      <Sparkle className="h-5 w-5 mr-2" />
                       Process Documents
                     </>
                   )}
@@ -316,12 +354,17 @@ export default function Home() {
                 <button
                   onClick={analyzeDocuments}
                   disabled={isAnalyzing}
-                  className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white py-2 px-4 rounded-md transition-colors flex items-center justify-center"
+                  className="w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500
+                           disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed
+                           text-white py-4 px-6 rounded-xl transition-all duration-300 
+                           flex items-center justify-center font-bold text-sm tracking-wide uppercase
+                           shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                 >
                   {isAnalyzing ? (
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
                   ) : (
                     <>
+                      <Pencil className="h-5 w-5 mr-2" />
                       Analyze Documents
                     </>
                   )}
@@ -332,27 +375,39 @@ export default function Home() {
 
           {/* Results Section */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                <FileText className="h-5 w-5 mr-2" />
-                Analysis Results
+            <div className="bg-gray-800/50 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-gray-700/50 hover:border-gray-600/50 transition-all duration-300">
+              <h2 className="text-2xl font-bold text-white mb-6 flex items-center tracking-wide">
+                <FileText className="h-6 w-6 mr-3 text-cyan-400" />
+                ANALYSIS RESULTS
               </h2>
 
               {!analysisResults && !isAnalyzing && (
-                <div className="text-center py-12 text-gray-500">
-                  <AlertCircle className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>
-                    No analysis results yet. Upload documents and run analysis
-                    to see results here.
+                <div className="text-center py-16 text-gray-400">
+                  <div className="relative">
+                    {/* Weird exclamation circle */}
+                    <AlertCircle className="h-16 w-16 mx-auto mb-6 opacity-30" />
+                  </div>
+                  <p className="text-lg font-light">
+                    Awaiting document analysis...
+                  </p>
+                  <p className="text-sm mt-2 opacity-70">
+                    Upload documents and run analysis to see results here.
                   </p>
                 </div>
               )}
 
               {isAnalyzing && (
-                <div className="text-center py-12">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                  <p className="text-gray-600">
-                    Analyzing documents... This may take a few minutes.
+                <div className="text-center py-16">
+                  <div className="relative mb-8">
+                    <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-cyan-400 mx-auto"></div>
+                    <div className="absolute inset-0 rounded-full border-4 border-gray-700/30"></div>
+                  </div>
+                  <p className="text-cyan-400 text-lg font-semibold mb-2">
+                    Analyzing Documents...
+                  </p>
+                  <p className="text-gray-400 text-sm">
+                    AI is processing your documents. This may take a few
+                    minutes.
                   </p>
                 </div>
               )}
@@ -362,13 +417,16 @@ export default function Home() {
                   {Object.entries(analysisResults).map(([field, value]) => (
                     <div
                       key={field}
-                      className="border-b border-gray-200 pb-4 last:border-b-0"
+                      className="border-b border-gray-700/50 pb-6 last:border-b-0"
                     >
-                      <h3 className="text-lg font-medium text-gray-900 mb-2">
+                      <h3 className="text-xl font-bold text-white mb-4 uppercase tracking-wider flex items-center">
+                        <div className="w-2 h-2 bg-cyan-400 rounded-full mr-3"></div>
                         {field}
                       </h3>
-                      <div className="text-gray-700 whitespace-pre-wrap bg-gray-50 p-3 rounded-md">
-                        {value || "Unknown"}
+                      <div className="text-gray-300 whitespace-pre-wrap bg-gray-900/40 p-6 rounded-xl border border-gray-700/30 font-mono text-sm leading-relaxed">
+                        {value || (
+                          <span className="text-gray-500 italic">Unknown</span>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -378,6 +436,23 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(55, 65, 81, 0.3);
+          border-radius: 2px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(56, 189, 248, 0.5);
+          border-radius: 2px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(56, 189, 248, 0.7);
+        }
+      `}</style>
     </div>
   );
 }
