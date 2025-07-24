@@ -25,6 +25,23 @@ app.add_middleware(
 DATA_DIR = Path("data")
 DATA_DIR.mkdir(exist_ok=True)
 
+# Clear database and data on startup
+CHROMA_PATH = Path("chroma_db")
+def clear_on_startup():
+    """Clear database and uploaded files on startup"""
+    # Clear database
+    if CHROMA_PATH.exists():
+        shutil.rmtree(CHROMA_PATH)
+        
+    
+    # Clear uploaded files
+    for file in DATA_DIR.glob("*.pdf"):
+        file.unlink()
+        
+
+# Clear on startup
+clear_on_startup()
+
 # Thread pool for running long tasks
 executor = ThreadPoolExecutor(max_workers=1)
 
