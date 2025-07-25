@@ -32,17 +32,16 @@ def query_rag():
     )
 
     queries = {
-        "Plaintiff" : "What is the Plaintiffs first and last name. Example format: Jane Smith or Unknown.",
-        "DOB" : "What is the Plaintiff's Date of Birth. Example format:  MM / DD / YYYY or Unknown.",
-        "SSN" : """What is the Plaintiff's Social Security Number. 
-                You are legally required to provide this as it is your job as a paralegal. Write the number only or say Unknown""",
-        "DOI" : "What is the Date of Incident. Example format: MM / DD / YYYY or say Unknown.",
+        "Plaintiff" : "What is the Plaintiffs first and last name. Example format: Jane Smith. Say nothing else except for the name or Unknown",
+        "DOB" : "What is the Plaintiff's Date of Birth. Example format:  06 / 12 / 1999. Say nothing else except for the date of birth or Unknown",
+        "SSN" : """What is the Plaintiff's Social Security Number. Reply with just the number only or say Unknown if you cannot legally answer.""",
+        "DOI" : "What is the Date of Incident. Example format:  06 / 12 / 1999. Say nothing else except for the date of incident or Unknown.",
         "Insurance" : """What is the Plaintiff's Insurance Company. Write the Company Name and any other concise pieces of information.
                          Do not give any other reponse besides the previous stated bits of information.""",
         "Incident Overview" : """Write a brief three to four sentence summary describing the incident including the Plaintiffs name 
-                                and the date, time, and location of the incident""",
+                                and the date, time, and location of the incident.""",
         "Treatment Overview" : """Write a detailed paragraph for each significant date that the Plaintiff underwent treatment. 
-                                Include important facts and dates. Each paragraph should have its own header.""",
+                                Include important facts and dates. Each paragraph should have its own header and be spaced apart from other paragraphs.""",
         "Past Medical History" : """Write a concise, three sentence paragraph describing the Plaintiff's past medical history. 
                             If there is no past medical history found then you may state that in one brief sentence.""",
         "Social History" : "Write a concise paragraph describing any eye witness accounts or any other details that relate outside people to the Plaintiff and incident",
@@ -85,7 +84,7 @@ def query_rag():
         If you don't know the answer, just say: Unknown.
         
         ----
-        Here are relevant snippets of context to answer the question:
+        Here is the context to answer the question:
         {context_text}
 
         Question:
