@@ -14,19 +14,13 @@ def main():
 
     query_rag()
 
-    # Withold chunks if they aren't relevant enough
-
-    # if len(results) == 0 or results[0][1] < 0.7:
-    #     print(f"Unable to find matching results.")
-    #     return
-
 
 def query_rag():
 
     # Preparing database with vector embeddings
     embedding_function = get_embedding_function()
     vector_store = Chroma(
-        collection_name="bee_movie",
+        collection_name="documents",
         persist_directory=CHROMA_PATH, 
         embedding_function=embedding_function
     )
@@ -97,7 +91,6 @@ def query_rag():
         response = client.generate(model=model, prompt=BRIEFLY_PROMPT_TEMPLATE)
         responses[key] = response.response
 
-        # print(f"\n\n---\nHere is context used to derive this answer ---------- \n\n{context_text}")
 
     print("--------------")
     for field, response in responses.items():
@@ -107,7 +100,6 @@ def query_rag():
         print()
 
         
-
     
 def get_embedding_function():
     embeddings =  OllamaEmbeddings(model="nomic-embed-text")

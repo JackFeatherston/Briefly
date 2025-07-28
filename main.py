@@ -10,7 +10,7 @@ from typing import List
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
-app = FastAPI(title="Briefly - Legal Document Analyzer")
+app = FastAPI(title="Briefly")
 
 # Configure CORS
 app.add_middleware(
@@ -45,9 +45,11 @@ clear_on_startup()
 # Thread pool for running long tasks
 executor = ThreadPoolExecutor(max_workers=1)
 
+
 @app.get("/")
 async def root():
     return {"message": "Briefly API is running"}
+
 
 @app.post("/upload-files")
 async def upload_files(files: List[UploadFile] = File(...)):
@@ -79,6 +81,7 @@ async def upload_files(files: List[UploadFile] = File(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @app.get("/files")
 async def list_files():
     """List all PDF files in the data directory"""
@@ -87,6 +90,7 @@ async def list_files():
         return {"files": pdf_files}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.delete("/files/{filename}")
 async def delete_file(filename: str):
@@ -101,6 +105,7 @@ async def delete_file(filename: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
 def run_create_database():
     """Run the create_database.py script"""
     try:
@@ -112,6 +117,7 @@ def run_create_database():
     except Exception as e:
         return {"success": False, "output": "", "error": str(e)}
 
+
 def run_query_data():
     """Run the query_data.py script"""
     try:
@@ -122,6 +128,7 @@ def run_query_data():
         return {"success": False, "output": e.stdout, "error": e.stderr}
     except Exception as e:
         return {"success": False, "output": "", "error": str(e)}
+
 
 @app.post("/create-database")
 async def create_database():
@@ -154,6 +161,7 @@ async def create_database():
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.post("/analyze-documents")
 async def analyze_documents():
@@ -190,6 +198,7 @@ async def analyze_documents():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
 def parse_analysis_output(output: str) -> dict:
     """Parse the output from query_data.py into structured data"""
     try:
@@ -218,6 +227,7 @@ def parse_analysis_output(output: str) -> dict:
         return results
     except Exception:
         return {"raw_output": output}
+
 
 @app.get("/health")
 async def health_check():

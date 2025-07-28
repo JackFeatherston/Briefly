@@ -50,7 +50,7 @@ def add_to_chroma(chunks: list[Document]):
 
     # Load the existing database
     vector_store = Chroma(
-    collection_name="bee_movie",
+    collection_name="documents",
     embedding_function=get_embedding_function(),
     persist_directory=CHROMA_PATH,  # Where to save data locally
     )
