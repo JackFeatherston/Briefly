@@ -7,43 +7,42 @@ import subprocess
 import sys
 from pathlib import Path
 from typing import List
-import asyncio
-from concurrent.futures import ThreadPoolExecutor
 
 app = FastAPI(title="Briefly")
 
-# Configure CORS
+# Configuring CORS to let frontend (port 3000) and backend (port 8000) talk
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Next.js default port
+    allow_origins=["http://localhost:3000"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Ensure data directory exists
+# Directory paths
 DATA_DIR = Path("data")
+CHROMA_PATH = Path("chroma_db")
+
 DATA_DIR.mkdir(exist_ok=True)
 
+
+
 # Clear database and data on startup
-CHROMA_PATH = Path("chroma_db")
 def clear_on_startup():
-    """Clear database and uploaded files on startup"""
-    # Clear database
+    """
+        Removes all previously existing files from /data and /chroma_db.
+        Makes sure that the user doesn't analyze unrelated leftover documents from previous sessions.
+    """
+    # Clear /chroma_db
     if CHROMA_PATH.exists():
         shutil.rmtree(CHROMA_PATH)
         
-    
-    # Clear uploaded files
+    # Clear uploaded files in /data
     for file in DATA_DIR.glob("*.pdf"):
         file.unlink()
         
 
-# Clear on startup
 clear_on_startup()
-
-# Thread pool for running long tasks
-executor = ThreadPoolExecutor(max_workers=1)
 
 
 @app.get("/")
@@ -53,14 +52,20 @@ async def root():
 
 @app.post("/upload-files")
 async def upload_files(files: List[UploadFile] = File(...)):
-    """Upload PDF files to the data directory"""
+    """
+        Accepts list of PDF files, validates them, and adds to /data to be processed.
+        Returns upload status and list of uploaded filenames
+    """
     try:
         uploaded_files = []
         
         for file in files:
             # Check if file is PDF
             if not file.filename.lower().endswith('.pdf'):
-                raise HTTPException(status_code=400, detail=f"File {file.filename} is not a PDF")
+                raise HTTPException(
+                    status_code=400, 
+                    detail=f"File {file.filename} is not a PDF"
+                )
             
             # Save file to data directory
             file_path = DATA_DIR / file.filename
@@ -84,9 +89,14 @@ async def upload_files(files: List[UploadFile] = File(...)):
 
 @app.get("/files")
 async def list_files():
-    """List all PDF files in the data directory"""
+    """
+        Get a list all the PDF files inside of /data.
+    """
     try:
-        pdf_files = [f.name for f in DATA_DIR.iterdir() if f.is_file() and f.suffix.lower() == '.pdf']
+        pdf_files = [
+            file.name for file in DATA_DIR.iterdir() 
+            if file.is_file() and file.suffix.lower() == '.pdf'
+        ]
         return {"files": pdf_files}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -94,7 +104,11 @@ async def list_files():
 
 @app.delete("/files/{filename}")
 async def delete_file(filename: str):
-    """Delete a specific file from the data directory"""
+    """
+        Delete a specific file from /data.
+        Takes in a filename as a string.
+        Returns status message on deletion
+    """
     try:
         file_path = DATA_DIR / filename
         if file_path.exists():
@@ -107,41 +121,58 @@ async def delete_file(filename: str):
 
 
 def run_create_database():
-    """Run the create_database.py script"""
+    """
+        Runs the create_database.py script as a subprocess to build the vector database.
+        Returns status message.
+    """
     try:
-        result = subprocess.run([sys.executable, "create_database.py"], 
-                              capture_output=True, text=True, check=True)
+        result = subprocess.run(
+            [sys.executable, "create_database.py"], 
+            capture_output=True, 
+            text=True, 
+            check=True
+        )
         return {"success": True, "output": result.stdout, "error": result.stderr}
-    except subprocess.CalledProcessError as e:
-        return {"success": False, "output": e.stdout, "error": e.stderr}
     except Exception as e:
         return {"success": False, "output": "", "error": str(e)}
 
 
 def run_query_data():
-    """Run the query_data.py script"""
+    """
+        Runs the query_data.py script as a subprocess to get llm responses.
+        Returns status message.
+    """
     try:
-        result = subprocess.run([sys.executable, "query_data.py"], 
-                              capture_output=True, text=True, check=True)
+        result = subprocess.run(
+            [sys.executable, "query_data.py"], 
+            capture_output=True, 
+            text=True, 
+            check=True
+        )
         return {"success": True, "output": result.stdout, "error": result.stderr}
-    except subprocess.CalledProcessError as e:
-        return {"success": False, "output": e.stdout, "error": e.stderr}
     except Exception as e:
         return {"success": False, "output": "", "error": str(e)}
 
 
 @app.post("/create-database")
 async def create_database():
-    """Create/update the vector database from uploaded PDFs"""
+    """
+        Create/update the vector database from uploaded PDFs.
+        Processes all uploaded PDFS, extracts text context, and stores
+        vector embeddings into vector database (/chroma_db).
+        Returns status message.
+    """
     try:
         # Check if there are any PDF files
-        pdf_files = [f for f in DATA_DIR.iterdir() if f.is_file() and f.suffix.lower() == '.pdf']
+        pdf_files = [
+            file for file in DATA_DIR.iterdir()
+            if file.is_file() and file.suffix.lower() == '.pdf'
+        ]
         if not pdf_files:
             raise HTTPException(status_code=400, detail="No PDF files found. Please upload files first.")
         
-        # Run create_database.py in background
-        loop = asyncio.get_event_loop()
-        result = await loop.run_in_executor(executor, run_create_database)
+        # Run create_database.py script
+        result = run_create_database()
         
         if result["success"]:
             return JSONResponse(
@@ -165,7 +196,10 @@ async def create_database():
 
 @app.post("/analyze-documents")
 async def analyze_documents():
-    """Run the document analysis and return results"""
+    """
+        Query llm with prompts and analyze processed documents.
+        Returns response to each prompt in a nice format.
+    """
     try:
         # Check if database exists
         if not Path("chroma_db").exists():
@@ -174,17 +208,19 @@ async def analyze_documents():
                 detail="Database not found. Please create database first."
             )
         
-        # Run query_data.py in background
-        loop = asyncio.get_event_loop()
-        result = await loop.run_in_executor(executor, run_query_data)
+        # Run query_data.py script
+        result = run_query_data()
         
         if result["success"]:
+            # Parse raw llm output into structured format
+            analysis_results = parse_analysis_output(result["output"])
+
             return JSONResponse(
                 status_code=200,
                 content={
                     "message": "Document analysis completed successfully",
                     "output": result["output"],
-                    "analysis_results": parse_analysis_output(result["output"])
+                    "analysis_results": analysis_results
                 }
             )
         else:
@@ -200,7 +236,11 @@ async def analyze_documents():
 
 
 def parse_analysis_output(output: str) -> dict:
-    """Parse the output from query_data.py into structured data"""
+    """
+        Parse the output from query_data.py into structured data.
+        Takes in string output from the llm response to the multiple queries.
+        Returns dictionary with field names and analysis as key and values
+    """
     try:
         results = {}
         current_field = None
@@ -208,15 +248,18 @@ def parse_analysis_output(output: str) -> dict:
         
         lines = output.split('\n')
         for line in lines:
+            # Check if this line starts a new field
             if ' : ' in line and not line.startswith('    '):
                 # Save previous field if exists
                 if current_field:
                     results[current_field] = '\n'.join(current_content).strip()
                 
-                # Start new field
+                # Preocces the new field
                 parts = line.split(' : ', 1)
                 current_field = parts[0].strip()
                 current_content = [parts[1]] if len(parts) > 1 else []
+
+            # If its not a new field, just keep adding to the current field we're scanning
             elif current_field and line.strip():
                 current_content.append(line)
         
@@ -228,15 +271,6 @@ def parse_analysis_output(output: str) -> dict:
     except Exception:
         return {"raw_output": output}
 
-
-@app.get("/health")
-async def health_check():
-    """Health check endpoint"""
-    return {
-        "status": "healthy",
-        "data_dir_exists": DATA_DIR.exists(),
-        "database_exists": Path("chroma_db").exists()
-    }
 
 if __name__ == "__main__":
     import uvicorn
