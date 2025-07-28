@@ -125,12 +125,12 @@ export default function Home() {
       const data = await response.json();
 
       if (response.ok) {
-        setSuccess("Database created/updated successfully");
+        setSuccess("Documents(s) processed successfully");
       } else {
         setError(data.detail || "Failed to create database");
       }
     } catch (err) {
-      setError("Failed to create database. Make sure the backend is running.");
+      setError("Couldn't process document(s). Make sure the backend is running.");
     } finally {
       setIsCreatingDatabase(false);
     }
