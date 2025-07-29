@@ -4,8 +4,6 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain.schema.document import Document
 from langchain_ollama import OllamaEmbeddings
 from langchain_chroma import Chroma
-
-import argparse
 import os
 import shutil
 
@@ -42,7 +40,12 @@ def split_documents(documents: list[Document]):
 
 
 def get_embedding_function():
-    embeddings =  OllamaEmbeddings(model="nomic-embed-text")
+    # embeddings =  OllamaEmbeddings(model="nomic-embed-text")
+    OLLAMA_BASE_URL = os.getenv('OLLAMA_BASE_URL', 'http://localhost:11434')
+    embeddings = OllamaEmbeddings(
+        model="nomic-embed-text",
+        base_url=OLLAMA_BASE_URL
+    )
     return embeddings
 
 

@@ -1,6 +1,5 @@
 import chromadb
 import os
-import argparse
 import ollama
 from langchain_ollama import OllamaEmbeddings
 from langchain_chroma import Chroma
@@ -11,7 +10,6 @@ CHROMA_PATH = r"chroma_db"
 
 
 def main():
-
     query_rag()
 
 
@@ -47,10 +45,11 @@ def query_rag():
 
     responses = {}
 
-    client = ollama.Client()
+    OLLAMA_BASE_URL = os.getenv('OLLAMA_BASE_URL', 'http://localhost:11434')
+    client = ollama.Client(host=OLLAMA_BASE_URL)
+    # client = ollama.Client()
 
     # change as needed 
-    # model = "gemma3"
     # model = "llama2:13b"
     model = "llama2:7b"
 
@@ -102,7 +101,11 @@ def query_rag():
         
     
 def get_embedding_function():
-    embeddings =  OllamaEmbeddings(model="nomic-embed-text")
+    # embeddings =  OllamaEmbeddings(model="nomic-embed-text")
+    embeddings = OllamaEmbeddings(
+        model="nomic-embed-text",
+        base_url=OLLAMA_BASE_URL
+    )
     return embeddings
 
 
