@@ -45,7 +45,7 @@ def clear_on_startup():
             except:
                 pass
     except Exception as e:
-        print(f"Cleanup warning: " {e})
+        print(f"Cleanup warning: {e}")
             
         
 
