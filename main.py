@@ -33,13 +33,20 @@ def clear_on_startup():
         Removes all previously existing files from /data and /chroma_db.
         Makes sure that the user doesn't analyze unrelated leftover documents from previous sessions.
     """
-    # Clear /chroma_db
-    if CHROMA_PATH.exists():
-        shutil.rmtree(CHROMA_PATH)
-        
-    # Clear uploaded files in /data
-    for file in DATA_DIR.glob("*.pdf"):
-        file.unlink()
+    try:
+        # Clear /chroma_db
+        if CHROMA_PATH.exists():
+            shutil.rmtree(CHROMA_PATH, ignore_errors=True)
+            
+        # Clear uploaded files in /data
+        for file in DATA_DIR.glob("*.pdf"):
+            try:
+                file.unlink()
+            except:
+                pass
+    except Exception as e:
+        print(f"Cleanup warning: " {e})
+            
         
 
 clear_on_startup()
