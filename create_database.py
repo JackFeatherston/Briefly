@@ -15,11 +15,31 @@ CHROMA_PATH = r"chroma_db"
 
 def main():
 
+    # Make sure all ollama utilities are loaded in
+    wait_for_ollama()
+
     # Create (or update) the data store. 
     documents = load_documents()
     chunks = split_documents(documents)
     add_to_chroma(chunks)
 
+
+def wait_for_ollama():
+    OLLAMA_BASE_URL = os.getenv('OLLAMA_BASE_URL', 'http://localhost:11434')
+    max_retries = 30
+    retry_delay = 2
+    
+    for attempt in range(max_retries):
+        try:
+            response = requests.get(f"{OLLAMA_BASE_URL}/api/tags", timeout=5)
+            if response.status_code == 200:
+                print("✓ Ollama is ready!")
+                return True
+        except Exception as e:
+            print(f"Waiting for Ollama... (attempt {attempt + 1}/{max_retries})")
+            time.sleep(retry_delay)
+    
+    raise Exception("Ollama is not responding after maximum retries")
 
 
 def load_documents():
@@ -106,7 +126,7 @@ def calculate_chunk_ids(chunks):
         chunk.metadata["id"] = chunk_id
 
     return chunks
-    
+
 
 if __name__ == "__main__":
     main()
