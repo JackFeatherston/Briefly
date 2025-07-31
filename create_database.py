@@ -6,6 +6,8 @@ from langchain_ollama import OllamaEmbeddings
 from langchain_chroma import Chroma
 import os
 import shutil
+import requests
+import time
 
 # Setting up db
 
