@@ -18,7 +18,7 @@ CHROMA_PATH = r"chroma_db"
 def main():
 
     # Make sure all ollama utilities are loaded in
-    wait_for_ollama()
+    # wait_for_ollama()
 
     # Create (or update) the data store. 
     documents = load_documents()

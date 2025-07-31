@@ -12,14 +12,14 @@ services:
       - OLLAMA_HOST=0.0.0.0:11434
     restart: unless-stopped
     # Resource limits and health check
-    mem_limit: 16G
-    mem_reservation: 6G
-    healthcheck:
-      test: ["CMD-SHELL", "curl -s http://127.0.0.1:11434/api/tags > /dev/null || exit 1"]
-      interval: 45s
-      timeout: 20s
-      retries: 8
-      start_period: 20s
+    # mem_limit: 16G
+    # mem_reservation: 6G
+    # healthcheck:
+    #   test: ["CMD-SHELL", "wget --quiet --tries=1 --spider http://localhost:11434/api/tags || exit 1"]
+    #   interval: 45s
+    #   timeout: 20s
+    #   retries: 8
+    #   start_period: 20s
 
   # Backend service
   backend:
@@ -35,19 +35,19 @@ services:
     environment:
       - OLLAMA_BASE_URL=http://ollama:11434
     depends_on:
-      ollama:
-        condition: service_healthy
+      - ollama
+        # condition: service_healthy
     restart: unless-stopped
     # Resource limits and health check
-    mem_limit: 3G
-    mem_reservation: 1G
+    # mem_limit: 3G
+    # mem_reservation: 1G
     # Add health check
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
-      interval: 30s
-      timeout: 15s
-      retries: 5
-      start_period: 60s
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+    #   interval: 30s
+    #   timeout: 15s
+    #   retries: 5
+    #   start_period: 60s
 
   # Frontend service
   frontend:
@@ -60,8 +60,8 @@ services:
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:8000
     depends_on:
-      backend:
-        condition: service_healthy
+      - backend
+        # condition: service_healthy
     restart: unless-stopped
 
 volumes:
