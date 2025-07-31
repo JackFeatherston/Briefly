@@ -64,7 +64,7 @@ def get_embedding_function():
     # embeddings =  OllamaEmbeddings(model="nomic-embed-text")
     OLLAMA_BASE_URL = os.getenv('OLLAMA_BASE_URL', 'http://localhost:11434')
     embeddings = OllamaEmbeddings(
-        model="nomic-embed-text",
+        model="all-minilm",
         base_url=OLLAMA_BASE_URL
     )
     return embeddings
