@@ -16,7 +16,6 @@ CHROMA_PATH = r"chroma_db"
 def main():
 
     # Create (or update) the data store. 
-    clear_database()
     documents = load_documents()
     chunks = split_documents(documents)
     add_to_chroma(chunks)
@@ -107,12 +106,7 @@ def calculate_chunk_ids(chunks):
         chunk.metadata["id"] = chunk_id
 
     return chunks
-
-
-def clear_database():
-    if os.path.exists(CHROMA_PATH):
-        shutil.rmtree(CHROMA_PATH)
-
+    
 
 if __name__ == "__main__":
     main()
