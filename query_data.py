@@ -51,7 +51,7 @@ def query_rag():
 
     # change as needed 
     # model = "llama2:13b"
-    model = "llama2:7b"
+    model = "gemma3"
 
     for key, query_text in queries.items():
 
