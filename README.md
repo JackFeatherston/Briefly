@@ -16,6 +16,11 @@ Briefly is a comprehensive application that combines modern web technologies wit
 - File Isolation: Uploaded files are containerized
 - Automatic Cleanup: Files cleared on application restart
 
+## RAG Workflow Schema
+<img width="1252" height="330" alt="Image" src="https://github.com/user-attachments/assets/fbd26367-dda7-4b77-8817-8858d34e4aa0" />
+
+<img width="965" height="688" alt="Image" src="https://github.com/user-attachments/assets/c89e9105-fc59-447b-aeba-52b4fea75dfe" />
+
 ## Tech Stack
 Frontend
 - Next.js + TypeScript for type safety and frontend framework
@@ -75,7 +80,8 @@ http://localhost:3000
 
 3. Analyze Documents
 - Click "Analyze Documents" to run AI analysis 
-- The system prompts models based on a preset list of queries the documents for key legal information 
+- The system prompts models based on a preset list of queries the documents for key legal information
+- With multiple documents to carefully index and parse, results will take several minutes to load
 - Results are displayed in structured format
 
 4. Review Results
@@ -105,4 +111,5 @@ Data Persistence
 - ollama_data: Stores downloaded AI models
 - ./data: PDF upload directory
 - ./chroma_db: Vector database storage 
+
 
