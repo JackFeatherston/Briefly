@@ -1,20 +1,18 @@
 # Briefly 
-Next-generation AI-powered legal document analysis platform for paralegals and legal professionals. <br/><br/>
+A RAG Workflow custom built for paralegals and legal professionals to automate legal document analysis. <br/><br/>
 
 Briefly is a comprehensive application that combines modern web technologies with local AI models to provide secure, efficient analysis of legal documents. Upload PDF files, process them through AI embeddings, and get structured analysis results for key legal information.
 
-## Features
-- Secure PDF Upload: Upload multiple PDF documents simultaneously
-- AI-Powered Analysis: Local LLM processing using Ollama for enhanced privacy
-- Vector Database: ChromaDB integration for efficient document search and retrieval
-- Structured Output: Organized analysis results for key legal fields
-- Modern UI: Sleek, responsive Next.js frontend with Tailwind CSS
-- Containerized: Complete Docker setup for easy deployment
-- Real-time Processing: Live updates on document processing status
-- Local Processing: All AI analysis happens locally
-- No External APIs: No data sent to external services
-- File Isolation: Uploaded files are containerized
-- Automatic Cleanup: Files cleared on application restart
+<img width="2102" height="1223" alt="Image" src="https://github.com/user-attachments/assets/17b1d4af-a71a-43ca-a55b-3ab72069758c" />
+
+## Features 
+- Local LLM processing using Ollama for <b>absolute privacy</b>
+- ChromaDB vector database integration for efficient <b>document search and retrieval</b>
+- <b>Organized</b> analysis results for key legal fields 
+- Complete <b>containterization</b> of application using Docker
+- Upload <b>multiple</b> PDF documents simultaneously
+- No external APIs and <b>no data sent</b> to external services
+- <b>Automatic cleanup</b> with files cleared on application restart
 
 ## RAG Workflow Schema
 <img width="1252" height="330" alt="Image" src="https://github.com/user-attachments/assets/fbd26367-dda7-4b77-8817-8858d34e4aa0" />
@@ -34,12 +32,12 @@ Backend
 
 AI/ML Stack
 - Ollama for running LLMs locally, yielding secure queries, and protecting sensitive document information 
-- Gemma3 and LLaMA2 models for document analysis
-- all-minilm embeddings for vector search
+- LLaMA2:7b model for document analysis
+- all-minilm model for vector embeddings
 
 ## System Requirements
 - Docker and Docker Compose
-- 16GB+ RAM recommended for AI models
+- 16GB+ RAM <b>highly</b> recommended for AI models (Document analysis using llama2:7b will take a significant amount of time with minimum hardware requirements)
 - 5GB+ storage for models and documents
 
 ## Installation & Setup
@@ -58,7 +56,7 @@ docker-compose up --build
 
 ```
 docker exec briefly-ollama ollama pull all-minilm
-docker exec briefly-ollama ollama pull gemma3
+docker exec briefly-ollama ollama pull llama2:7b
 ```
 
 4. Navigate to the application
@@ -111,5 +109,6 @@ Data Persistence
 - ollama_data: Stores downloaded AI models
 - ./data: PDF upload directory
 - ./chroma_db: Vector database storage 
+
 
 
