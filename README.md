@@ -1,10 +1,10 @@
 # Briefly 
-Tired of draining your company budget Cloud API credits with OpenAI or Anthropic?
-Worried about leaking internal company documents, trade secrets, and sensitive client data?
+Tired of draining your company budget Cloud API credits with OpenAI or Anthropic?<br/>
+Worried about leaking internal company documents, trade secrets, and sensitive client data?<br/>
 Try Briefly: a local LLM based RAG Workflow custom built for paralegals and legal professionals to automate legal document analysis
 while offloading the repetitive workload to cheap yet incredibly effective local compute while maintaining absolute document privacy. <br/><br/>
 
-Briefly is a comprehensive application that combines modern web technologies with local AI models to provide secure, efficient analysis of legal documents. Upload PDF files, process them through AI embeddings, and get structured analysis results for key legal information.
+Briefly is a comprehensive application that combines modern web technologies with local AI models to provide secure, efficient analysis of legal documents. Upload PDF files, process them through AI embeddings, and get structured analysis results for key legal information reducing tedious case document review time from hours to minutes.
 
 <img width="2102" height="1223" alt="Image" src="https://github.com/user-attachments/assets/17b1d4af-a71a-43ca-a55b-3ab72069758c" />
 
