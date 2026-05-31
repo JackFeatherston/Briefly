@@ -1,5 +1,8 @@
 # Briefly 
-A RAG Workflow custom built for paralegals and legal professionals to automate legal document analysis. <br/><br/>
+Tired of draining your company budget Cloud API credits with OpenAI or Anthropic?
+Worried about leaking internal company documents, trade secrets, and sensitive client data?
+Try Briefly: a local LLM based RAG Workflow custom built for paralegals and legal professionals to automate legal document analysis
+while offloading the repetitive workload to cheap yet incredibly effective local compute while maintaining absolute document privacy. <br/><br/>
 
 Briefly is a comprehensive application that combines modern web technologies with local AI models to provide secure, efficient analysis of legal documents. Upload PDF files, process them through AI embeddings, and get structured analysis results for key legal information.
 
